@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { Team, Match } from '@/lib/cricket-math'
 import { useRouter } from 'next/navigation'
-import { LogOut, Plus, Trash2, Edit2 } from 'lucide-react'
+import Link from 'next/link'
+import { LogOut, Plus, Trash2, Edit2, ArrowLeft } from 'lucide-react'
 
 export default function AdminDashboardClient({
   initialTeams,
@@ -146,15 +147,24 @@ export default function AdminDashboardClient({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Admin Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-        >
-          <LogOut className="w-4 h-4" />
-          Logout
-        </button>
+      <div className="flex justify-between items-center bg-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10">
+        <h1 className="text-2xl font-bold text-white tracking-wide">Admin Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/standings"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-cyan-400 hover:text-cyan-300 hover:bg-white/5 rounded-lg transition-colors border border-cyan-500/30 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            View Points Table
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-300 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
+        </div>
       </div>
 
       <div className="flex space-x-1 bg-slate-200/50 p-1 rounded-xl w-fit">
@@ -162,8 +172,8 @@ export default function AdminDashboardClient({
           onClick={() => setActiveTab('matches')}
           className={`px-6 py-2.5 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'matches' 
-              ? 'bg-white text-blue-700 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+              ? 'bg-white/5 backdrop-blur-xl text-cyan-300 shadow-[0_0_20px_rgba(0,0,0,0.3)]' 
+              : 'text-slate-300 hover:text-white font-bold tracking-wide hover:bg-slate-200/50'
           }`}
         >
           Manage Matches
@@ -172,8 +182,8 @@ export default function AdminDashboardClient({
           onClick={() => setActiveTab('teams')}
           className={`px-6 py-2.5 text-sm font-medium rounded-lg transition-colors ${
             activeTab === 'teams' 
-              ? 'bg-white text-blue-700 shadow-sm' 
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+              ? 'bg-white/5 backdrop-blur-xl text-cyan-300 shadow-[0_0_20px_rgba(0,0,0,0.3)]' 
+              : 'text-slate-300 hover:text-white font-bold tracking-wide hover:bg-slate-200/50'
           }`}
         >
           Manage Teams
@@ -183,34 +193,34 @@ export default function AdminDashboardClient({
       {activeTab === 'teams' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Add New Team</h2>
+            <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10">
+              <h2 className="text-lg font-semibold text-white font-bold tracking-wide mb-4">Add New Team</h2>
               <form onSubmit={handleAddTeam} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Team Name *</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Team Name *</label>
                   <input
                     required
                     type="text"
                     value={teamName}
                     onChange={e => setTeamName(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                     placeholder="e.g. Australia"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Logo URL (optional)</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Logo URL (optional)</label>
                   <input
                     type="url"
                     value={teamLogo}
                     onChange={e => setTeamLogo(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                     placeholder="https://..."
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={teamLoading}
-                  className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                  className="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.3)] text-sm font-medium text-white bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-bold tracking-wider uppercase border-none shadow-[0_0_15px_rgba(251,191,36,0.3)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500/50 disabled:opacity-50"
                 >
                   <Plus className="w-4 h-4" />
                   {teamLoading ? 'Adding...' : 'Add Team'}
@@ -220,24 +230,24 @@ export default function AdminDashboardClient({
           </div>
           
           <div className="lg:col-span-2">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">Existing Teams</h2>
+            <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10">
+              <h2 className="text-lg font-semibold text-white font-bold tracking-wide mb-4">Existing Teams</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {teams.map(team => (
-                  <div key={team.id} className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
+                  <div key={team.id} className="flex items-center justify-between p-4 border border-white/10 rounded-xl hover:bg-black/30 transition-colors">
                     <div className="flex items-center gap-3">
                       {team.logo_url ? (
-                        <img src={team.logo_url} alt={team.name} className="w-8 h-8 rounded-full border border-slate-200" />
+                        <img src={team.logo_url} alt={team.name} className="w-8 h-8 rounded-full border border-white/10" />
                       ) : (
-                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                        <div className="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center font-bold text-xs">
                           {team.name.substring(0,2).toUpperCase()}
                         </div>
                       )}
-                      <span className="font-medium text-slate-900">{team.name}</span>
+                      <span className="font-medium text-white font-bold tracking-wide">{team.name}</span>
                     </div>
                     <button
                       onClick={() => handleDeleteTeam(team.id)}
-                      className="text-slate-400 hover:text-red-600 transition-colors p-1"
+                      className="text-slate-500 hover:text-red-600 transition-colors p-1"
                       title="Delete team"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -254,11 +264,11 @@ export default function AdminDashboardClient({
       {activeTab === 'matches' && (
         <div className="space-y-8">
           {/* Add Match Form */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <h2 className="text-lg font-semibold text-slate-900 mb-6">Enter Match Result</h2>
+          <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10">
+            <h2 className="text-lg font-semibold text-white font-bold tracking-wide mb-6">Enter Match Result</h2>
             
             {formError && (
-              <div className="mb-6 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+              <div className="mb-6 p-3 bg-red-500/10 text-red-400 border-red-500/30 text-sm rounded-lg border border-red-100">
                 {formError}
               </div>
             )}
@@ -267,17 +277,17 @@ export default function AdminDashboardClient({
               {/* Match Meta */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Match Date</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Match Date</label>
                   <input
                     type="date"
                     required
                     value={matchDate}
                     onChange={e => setMatchDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:ring-2 focus:ring-cyan-500/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Overs Limit</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Overs Limit</label>
                   <input
                     type="number"
                     step="1"
@@ -290,30 +300,30 @@ export default function AdminDashboardClient({
                       setT1Overs(limit);
                       setT2Overs(limit);
                     }}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:ring-2 focus:ring-cyan-500/50"
                   />
                 </div>
               </div>
 
               {/* Teams & Toss */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-black/30 rounded-xl border border-white/10">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Team 1</label>
-                  <select required value={team1Id} onChange={e => setTeam1Id(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Team 1</label>
+                  <select required value={team1Id} onChange={e => setTeam1Id(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:ring-2 focus:ring-cyan-500/50 bg-white/5 backdrop-blur-xl">
                     <option value="">Select Team</option>
                     {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Team 2</label>
-                  <select required value={team2Id} onChange={e => setTeam2Id(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Team 2</label>
+                  <select required value={team2Id} onChange={e => setTeam2Id(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:ring-2 focus:ring-cyan-500/50 bg-white/5 backdrop-blur-xl">
                     <option value="">Select Team</option>
                     {teams.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Batting First</label>
-                  <select required value={battingFirstId} onChange={e => setBattingFirstId(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Batting First</label>
+                  <select required value={battingFirstId} onChange={e => setBattingFirstId(e.target.value)} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner focus:ring-2 focus:ring-cyan-500/50 bg-white/5 backdrop-blur-xl">
                     <option value="">Select Team</option>
                     {team1Id && <option value={team1Id}>{teams.find(t => t.id === team1Id)?.name}</option>}
                     {team2Id && <option value={team2Id}>{teams.find(t => t.id === team2Id)?.name}</option>}
@@ -323,74 +333,74 @@ export default function AdminDashboardClient({
 
               {/* Result */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="p-4 border border-slate-200 rounded-xl bg-white">
-                  <h3 className="font-semibold text-slate-800 mb-4 flex items-center justify-between">
+                <div className="p-4 border border-white/10 rounded-xl bg-white/5 backdrop-blur-xl">
+                  <h3 className="font-semibold text-slate-200 font-semibold mb-4 flex items-center justify-between">
                     <span>{teams.find(t => t.id === team1Id)?.name || 'Team 1'} Innings</span>
-                    {battingFirstId === team1Id && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">1st Innings</span>}
-                    {battingFirstId === team2Id && <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">2nd Innings</span>}
+                    {battingFirstId === team1Id && <span className="text-xs bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 px-2 py-1 rounded">1st Innings</span>}
+                    {battingFirstId === team2Id && <span className="text-xs bg-slate-100 text-slate-300 px-2 py-1 rounded">2nd Innings</span>}
                   </h3>
                   <div className="space-y-4">
                     <div className="flex gap-4">
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-slate-500 mb-1">Runs</label>
-                        <input type="number" min="0" required disabled={result === 'no_result'} value={t1Runs} onChange={e => setT1Runs(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                        <input type="number" min="0" required disabled={result === 'no_result'} value={t1Runs} onChange={e => setT1Runs(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                       </div>
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-slate-500 mb-1">Wickets</label>
-                        <input type="number" min="0" max="10" required disabled={result === 'no_result'} value={t1Wickets} onChange={e => setT1Wickets(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                        <input type="number" min="0" max="10" required disabled={result === 'no_result'} value={t1Wickets} onChange={e => setT1Wickets(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-slate-500 mb-1">Overs Faced (e.g. 19.4)</label>
-                      <input type="number" step="0.1" min="0" max={oversLimit} required disabled={result === 'no_result'} value={t1Overs} onChange={e => setT1Overs(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                      <input type="number" step="0.1" min="0" max={oversLimit} required disabled={result === 'no_result'} value={t1Overs} onChange={e => setT1Overs(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 border border-slate-200 rounded-xl bg-white">
-                  <h3 className="font-semibold text-slate-800 mb-4 flex items-center justify-between">
+                <div className="p-4 border border-white/10 rounded-xl bg-white/5 backdrop-blur-xl">
+                  <h3 className="font-semibold text-slate-200 font-semibold mb-4 flex items-center justify-between">
                     <span>{teams.find(t => t.id === team2Id)?.name || 'Team 2'} Innings</span>
-                    {battingFirstId === team2Id && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">1st Innings</span>}
-                    {battingFirstId === team1Id && <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">2nd Innings</span>}
+                    {battingFirstId === team2Id && <span className="text-xs bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 px-2 py-1 rounded">1st Innings</span>}
+                    {battingFirstId === team1Id && <span className="text-xs bg-slate-100 text-slate-300 px-2 py-1 rounded">2nd Innings</span>}
                   </h3>
                   <div className="space-y-4">
                     <div className="flex gap-4">
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-slate-500 mb-1">Runs</label>
-                        <input type="number" min="0" required disabled={result === 'no_result'} value={t2Runs} onChange={e => setT2Runs(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                        <input type="number" min="0" required disabled={result === 'no_result'} value={t2Runs} onChange={e => setT2Runs(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                       </div>
                       <div className="flex-1">
                         <label className="block text-xs font-medium text-slate-500 mb-1">Wickets</label>
-                        <input type="number" min="0" max="10" required disabled={result === 'no_result'} value={t2Wickets} onChange={e => setT2Wickets(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                        <input type="number" min="0" max="10" required disabled={result === 'no_result'} value={t2Wickets} onChange={e => setT2Wickets(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-slate-500 mb-1">Overs Faced (e.g. 19.4)</label>
-                      <input type="number" step="0.1" min="0" max={oversLimit} required disabled={result === 'no_result'} value={t2Overs} onChange={e => setT2Overs(Number(e.target.value))} className="w-full px-3 py-2 border border-slate-300 rounded-lg disabled:bg-slate-50" />
+                      <input type="number" step="0.1" min="0" max={oversLimit} required disabled={result === 'no_result'} value={t2Overs} onChange={e => setT2Overs(Number(e.target.value))} className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-xl focus:outline-none text-white shadow-inner disabled:bg-black/30" />
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Match Result Select */}
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                <label className="block text-sm font-medium text-slate-700 mb-2">Match Result</label>
+              <div className="p-4 bg-black/30 rounded-xl border border-white/10">
+                <label className="block text-sm font-medium text-slate-300 mb-2">Match Result</label>
                 <div className="flex flex-wrap gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="result" value="team1_win" checked={result === 'team1_win'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
-                    <span className="text-sm font-medium text-slate-700">{teams.find(t => t.id === team1Id)?.name || 'Team 1'} Won</span>
+                    <input type="radio" name="result" value="team1_win" checked={result === 'team1_win'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-cyan-400 border-white/20 focus:ring-cyan-500/50" />
+                    <span className="text-sm font-medium text-slate-300">{teams.find(t => t.id === team1Id)?.name || 'Team 1'} Won</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="result" value="team2_win" checked={result === 'team2_win'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
-                    <span className="text-sm font-medium text-slate-700">{teams.find(t => t.id === team2Id)?.name || 'Team 2'} Won</span>
+                    <input type="radio" name="result" value="team2_win" checked={result === 'team2_win'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-cyan-400 border-white/20 focus:ring-cyan-500/50" />
+                    <span className="text-sm font-medium text-slate-300">{teams.find(t => t.id === team2Id)?.name || 'Team 2'} Won</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="result" value="tie" checked={result === 'tie'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
-                    <span className="text-sm font-medium text-slate-700">Tie</span>
+                    <input type="radio" name="result" value="tie" checked={result === 'tie'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-cyan-400 border-white/20 focus:ring-cyan-500/50" />
+                    <span className="text-sm font-medium text-slate-300">Tie</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="result" value="no_result" checked={result === 'no_result'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
-                    <span className="text-sm font-medium text-slate-700">No Result</span>
+                    <input type="radio" name="result" value="no_result" checked={result === 'no_result'} onChange={(e) => setResult(e.target.value as any)} className="w-4 h-4 text-cyan-400 border-white/20 focus:ring-cyan-500/50" />
+                    <span className="text-sm font-medium text-slate-300">No Result</span>
                   </label>
                 </div>
               </div>
@@ -399,7 +409,7 @@ export default function AdminDashboardClient({
                 <button
                   type="submit"
                   disabled={matchLoading}
-                  className="flex items-center gap-2 py-2.5 px-6 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                  className="flex items-center gap-2 py-2.5 px-6 border border-transparent rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.3)] text-sm font-medium text-white bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-bold tracking-wider uppercase border-none shadow-[0_0_15px_rgba(251,191,36,0.3)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500/50 disabled:opacity-50"
                 >
                   <Plus className="w-4 h-4" />
                   {matchLoading ? 'Submitting...' : 'Submit Match Result'}
@@ -409,19 +419,19 @@ export default function AdminDashboardClient({
           </div>
 
           {/* Matches List */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Past Matches</h2>
+          <div className="bg-white/5 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10">
+            <h2 className="text-lg font-semibold text-white font-bold tracking-wide mb-4">Past Matches</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[600px]">
                 <thead>
-                  <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-slate-100">
+                  <tr className="bg-black/30 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-white/10">
                     <th className="p-4">Date</th>
                     <th className="p-4">Match</th>
                     <th className="p-4">Result</th>
                     <th className="p-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-white/5">
                   {matches.map(m => {
                     const t1 = teams.find(t => t.id === m.team1_id)?.name || 'Unknown'
                     const t2 = teams.find(t => t.id === m.team2_id)?.name || 'Unknown'
@@ -431,18 +441,18 @@ export default function AdminDashboardClient({
                     else if (m.result === 'tie') resStr = 'Tied'
                     
                     return (
-                      <tr key={m.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="p-4 text-sm text-slate-600">{new Date(m.match_date).toLocaleDateString()}</td>
-                        <td className="p-4 text-sm font-medium text-slate-900">{t1} vs {t2}</td>
-                        <td className="p-4 text-sm text-slate-600">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                      <tr key={m.id} className="hover:bg-black/30 transition-colors">
+                        <td className="p-4 text-sm text-slate-300">{new Date(m.match_date).toLocaleDateString()}</td>
+                        <td className="p-4 text-sm font-medium text-white font-bold tracking-wide">{t1} vs {t2}</td>
+                        <td className="p-4 text-sm text-slate-300">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-200 font-semibold">
                             {resStr}
                           </span>
                         </td>
                         <td className="p-4 text-right">
                           <button
                             onClick={() => handleDeleteMatch(m.id)}
-                            className="text-slate-400 hover:text-red-600 transition-colors p-1"
+                            className="text-slate-500 hover:text-red-600 transition-colors p-1"
                             title="Delete Match"
                           >
                             <Trash2 className="w-4 h-4" />

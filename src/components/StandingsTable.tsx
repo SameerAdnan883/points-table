@@ -98,82 +98,85 @@ export default function StandingsTable({
   return (
     <div className="w-full max-w-6xl mx-auto p-4 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
-            <Trophy className="w-6 h-6" />
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/5 backdrop-blur-xl p-6 rounded-3xl shadow-[0_0_30px_rgba(0,0,0,0.3)] border border-white/10">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-cyan-500/20 text-cyan-400 rounded-xl border border-cyan-500/30 shadow-inner">
+            <Trophy className="w-6 h-6 drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">League Standings</h1>
-            <p className="text-sm text-slate-500">Official Points Table</p>
+            <h1 className="text-2xl font-bold text-white tracking-tight">League Standings</h1>
+            <p className="text-sm text-cyan-400/70 font-medium tracking-wide uppercase">Official Points Table</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-sm px-4 py-2 bg-slate-50 rounded-full border border-slate-200">
-          <Activity className={cn("w-4 h-4", isConnected ? "text-emerald-500 animate-pulse" : "text-amber-500")} />
-          <span className="text-slate-600 font-medium">
-            {isConnected ? `Updated ${timeAgo}` : 'Reconnecting...'}
+        <div className="flex items-center gap-2 text-sm px-4 py-2 bg-black/20 rounded-full border border-white/10 shadow-inner">
+          <Activity className={cn("w-4 h-4", isConnected ? "text-cyan-400 animate-pulse drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]" : "text-amber-500")} />
+          <span className="text-slate-300 font-medium tracking-wide">
+            {isConnected ? `LIVE • ${timeAgo}` : 'Reconnecting...'}
           </span>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider font-semibold border-b border-slate-100">
-                <th className="p-4 whitespace-nowrap w-16 text-center">Rank</th>
-                <th className="p-4 whitespace-nowrap min-w-[150px]">Team</th>
-                <th className="p-4 whitespace-nowrap text-center" title="Matches Played">M</th>
-                <th className="p-4 whitespace-nowrap text-center" title="Won">W</th>
-                <th className="p-4 whitespace-nowrap text-center" title="Lost">L</th>
-                <th className="p-4 whitespace-nowrap text-center" title="Tied">T</th>
-                <th className="p-4 whitespace-nowrap text-center" title="No Result">NR</th>
-                <th className="p-4 whitespace-nowrap text-center text-blue-600">Pts</th>
-                <th className="p-4 whitespace-nowrap text-right">NRR</th>
+              <tr className="bg-black/20 text-cyan-400/80 text-xs uppercase tracking-wider font-bold border-b border-white/10">
+                <th className="p-5 whitespace-nowrap w-16 text-center">Rank</th>
+                <th className="p-5 whitespace-nowrap min-w-[150px]">Team</th>
+                <th className="p-5 whitespace-nowrap text-center" title="Matches Played">M</th>
+                <th className="p-5 whitespace-nowrap text-center" title="Won">W</th>
+                <th className="p-5 whitespace-nowrap text-center" title="Lost">L</th>
+                <th className="p-5 whitespace-nowrap text-center" title="Tied">T</th>
+                <th className="p-5 whitespace-nowrap text-center" title="No Result">NR</th>
+                <th className="p-5 whitespace-nowrap text-center text-amber-400">Pts</th>
+                <th className="p-5 whitespace-nowrap text-right">NRR</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-white/5">
               {standings.map((standing, index) => (
                 <tr 
                   key={standing.team_id}
-                  className="hover:bg-slate-50/50 transition-colors group"
+                  className={cn(
+                    "transition-all duration-300 group hover:bg-white/5",
+                    index === 0 && "bg-amber-500/5 hover:bg-amber-500/10"
+                  )}
                 >
-                  <td className="p-4 text-center">
+                  <td className="p-5 text-center">
                     <span className={cn(
-                      "inline-flex items-center justify-center w-6 h-6 rounded-full text-sm font-semibold",
-                      index === 0 ? "bg-amber-100 text-amber-700" :
-                      index === 1 ? "bg-slate-200 text-slate-700" :
-                      index === 2 ? "bg-orange-100 text-orange-800" :
-                      "text-slate-500"
+                      "inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold shadow-inner",
+                      index === 0 ? "bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-[0_0_10px_rgba(251,191,36,0.3)]" :
+                      index === 1 ? "bg-slate-400/20 text-slate-300 border border-slate-400/30" :
+                      index === 2 ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" :
+                      "text-slate-400 bg-black/20 border border-white/5"
                     )}>
                       {index + 1}
                     </span>
                   </td>
-                  <td className="p-4 font-semibold text-slate-900 flex items-center gap-3">
+                  <td className="p-5 font-bold text-white flex items-center gap-4">
                     {standing.logo_url ? (
-                      <img src={standing.logo_url} alt={standing.team_name} className="w-8 h-8 rounded-full object-cover border border-slate-200" />
+                      <img src={standing.logo_url} alt={standing.team_name} className="w-10 h-10 rounded-full object-cover border border-white/10 shadow-[0_0_10px_rgba(0,0,0,0.5)]" />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-900 to-cyan-800 border border-cyan-500/30 text-cyan-300 flex items-center justify-center font-extrabold text-sm shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                         {standing.team_name.substring(0, 2).toUpperCase()}
                       </div>
                     )}
-                    {standing.team_name}
+                    <span className="tracking-wide">{standing.team_name}</span>
                   </td>
-                  <td className="p-4 text-center text-slate-600">{standing.matches}</td>
-                  <td className="p-4 text-center text-slate-600">{standing.won}</td>
-                  <td className="p-4 text-center text-slate-600">{standing.lost}</td>
-                  <td className="p-4 text-center text-slate-600">{standing.tied}</td>
-                  <td className="p-4 text-center text-slate-600">{standing.nr}</td>
-                  <td className="p-4 text-center font-bold text-blue-600 text-lg">{standing.points}</td>
-                  <td className="p-4 text-right font-medium text-slate-700">
+                  <td className="p-5 text-center text-slate-300 font-medium">{standing.matches}</td>
+                  <td className="p-5 text-center text-slate-300 font-medium">{standing.won}</td>
+                  <td className="p-5 text-center text-slate-300 font-medium">{standing.lost}</td>
+                  <td className="p-5 text-center text-slate-300 font-medium">{standing.tied}</td>
+                  <td className="p-5 text-center text-slate-300 font-medium">{standing.nr}</td>
+                  <td className="p-5 text-center font-extrabold text-amber-400 text-xl drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]">{standing.points}</td>
+                  <td className="p-5 text-right font-semibold text-cyan-300/80">
                     {standing.nrr > 0 ? '+' : ''}{standing.nrr.toFixed(3)}
                   </td>
                 </tr>
               ))}
               {standings.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-slate-500">
+                  <td colSpan={9} className="p-12 text-center text-slate-400 font-medium tracking-wide uppercase">
                     No teams available.
                   </td>
                 </tr>
@@ -185,9 +188,12 @@ export default function StandingsTable({
 
       {/* Recent Matches */}
       {recentMatches.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 px-2">Recent Matches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-6 pt-4">
+          <h2 className="text-xl font-bold text-white px-2 tracking-wide flex items-center gap-2">
+            <span className="w-2 h-6 bg-cyan-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.6)]"></span>
+            Recent Matches
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {recentMatches.map(match => {
               const team1 = getTeamName(match.team1_id)
               const team2 = getTeamName(match.team2_id)
@@ -198,27 +204,27 @@ export default function StandingsTable({
               else resultStr = 'No Result'
 
               return (
-                <div key={match.id} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
+                <div key={match.id} className="bg-white/5 backdrop-blur-md p-6 rounded-2xl shadow-[0_0_20px_rgba(0,0,0,0.3)] border border-white/10 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.15)] group">
+                  <div className="flex justify-between items-center mb-5 pb-4 border-b border-white/5">
+                    <span className="text-xs font-bold tracking-widest text-cyan-500/80 uppercase">
                       {new Date(match.match_date).toLocaleDateString()}
                     </span>
                     <span className={cn(
-                      "text-xs font-bold px-2 py-1 rounded-full",
-                      match.result.includes('win') ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600"
+                      "text-[10px] font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full border shadow-inner",
+                      match.result.includes('win') ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-white/5 text-slate-300 border-white/10"
                     )}>
                       {resultStr}
                     </span>
                   </div>
                   
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-slate-800">{team1}</span>
-                      <span className="text-slate-600 font-medium">{match.team1_runs != null ? `${match.team1_runs}/${match.team1_wickets} (${match.team1_overs})` : '-'}</span>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center group-hover:text-white transition-colors">
+                      <span className="font-bold text-slate-200 tracking-wide">{team1}</span>
+                      <span className="text-amber-400 font-semibold drop-shadow-[0_0_2px_rgba(251,191,36,0.8)]">{match.team1_runs != null ? `${match.team1_runs}/${match.team1_wickets} (${match.team1_overs})` : '-'}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-slate-800">{team2}</span>
-                      <span className="text-slate-600 font-medium">{match.team2_runs != null ? `${match.team2_runs}/${match.team2_wickets} (${match.team2_overs})` : '-'}</span>
+                    <div className="flex justify-between items-center group-hover:text-white transition-colors">
+                      <span className="font-bold text-slate-200 tracking-wide">{team2}</span>
+                      <span className="text-amber-400 font-semibold drop-shadow-[0_0_2px_rgba(251,191,36,0.8)]">{match.team2_runs != null ? `${match.team2_runs}/${match.team2_wickets} (${match.team2_overs})` : '-'}</span>
                     </div>
                   </div>
                 </div>
