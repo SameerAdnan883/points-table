@@ -32,7 +32,7 @@ export default function StandingsTable({
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'matches' },
-        (payload) => {
+        (payload: any) => {
           setLastUpdated(new Date())
           if (payload.eventType === 'INSERT') {
             setMatches((prev) => [...prev, payload.new as Match])
@@ -48,7 +48,7 @@ export default function StandingsTable({
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'teams' },
-        (payload) => {
+        (payload: any) => {
           setLastUpdated(new Date())
           if (payload.eventType === 'INSERT') {
             setTeams((prev) => [...prev, payload.new as Team])
@@ -61,7 +61,7 @@ export default function StandingsTable({
           }
         }
       )
-      .subscribe((status) => {
+      .subscribe((status: string) => {
         if (status === 'SUBSCRIBED') {
           setIsConnected(true)
         } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
