@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Live Cricket Points Table
 
-## Getting Started
+A real-time cricket tournament points table built with Next.js (App Router), Tailwind CSS, and Supabase.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Real-time Public Points Table:** Viewers see updates instantly without refreshing when matches are added.
+- **ICC Standard NRR Math:** Correctly implements Net Run Rate calculations, including the "all out" rule where overs faced equals the full match overs limit.
+- **Admin Dashboard:** Secure login for tournament organizers to enter match results and manage teams.
+- **Supabase Backend:** Uses PostgreSQL with Row Level Security (RLS) for data integrity and Realtime subscriptions.
+- **Vercel Ready:** Designed to be easily deployed on Vercel's free tier.
+
+## Setup Instructions
+
+### 1. Supabase Setup
+
+1. Create a new project on [Supabase](https://supabase.com).
+2. Go to **SQL Editor** in your Supabase dashboard.
+3. Open `supabase/migrations/00000000000000_init.sql` from this repository, paste the contents into the SQL Editor, and run it. This will create the `teams` and `matches` tables, setup RLS policies, and configure Realtime.
+4. Go to **Authentication** > **Providers** in Supabase and ensure Email provider is enabled.
+5. Go to **Authentication** > **Users** and create a new user with an email and password. This will be your admin account for logging into the dashboard.
+
+### 2. Environment Variables
+
+Create a `.env.local` file in the root of the project:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You can find these values in your Supabase Dashboard under **Settings** > **API**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) to see the public table.
+Navigate to [http://localhost:3000/admin](http://localhost:3000/admin) to log in and manage the tournament.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Deployment to Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to a GitHub repository.
+2. Go to [Vercel](https://vercel.com) and import the repository.
+3. Add the two environment variables (`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`) in the Vercel deployment settings.
+4. Deploy!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- **Frontend:** Next.js 14 (App Router), React, Tailwind CSS, Lucide Icons
+- **Backend:** Supabase (PostgreSQL, Auth, Realtime)
+- **Deployment:** Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## NRR Calculation Note
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Net Run Rate (NRR) is calculated as:
+`(Total runs scored / Total overs faced) - (Total runs conceded / Total overs bowled)`
+
+If a team is bowled out (10 wickets) before facing their full quota of overs, their "overs faced" for that match is considered to be the maximum possible overs (e.g., 20 overs in a T20), in accordance with standard cricket laws.
