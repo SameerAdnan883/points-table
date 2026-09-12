@@ -1,19 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { oversToDecimal, calculateStandings, Team, Match } from './cricket-math';
+import { oversToBalls, calculateStandings, Team, Match } from './cricket-math';
 
-describe('oversToDecimal', () => {
-  it('converts overs to correct decimals', () => {
-    expect(oversToDecimal(20)).toBe(20);
-    expect(oversToDecimal(19.4)).toBeCloseTo(19.6666, 4);
-    expect(oversToDecimal(0.1)).toBeCloseTo(0.1666, 4);
-    expect(oversToDecimal(0.5)).toBeCloseTo(0.8333, 4);
+describe('oversToBalls', () => {
+  it('converts overs to correct balls', () => {
+    expect(oversToBalls(20)).toBe(120);
+    expect(oversToBalls(19.4)).toBe(118);
+    expect(oversToBalls(0.1)).toBe(1);
+    expect(oversToBalls(0.5)).toBe(5);
   });
 });
 
 describe('calculateStandings', () => {
-  const tA: Team = { id: 'A', name: 'Team A', logo_url: null, created_at: '' };
-  const tB: Team = { id: 'B', name: 'Team B', logo_url: null, created_at: '' };
-  const tC: Team = { id: 'C', name: 'Team C', logo_url: null, created_at: '' };
+  const tA: Team = { id: 'A', name: 'Team A', logo_url: null, group_id: 1, created_at: '' };
+  const tB: Team = { id: 'B', name: 'Team B', logo_url: null, group_id: 1, created_at: '' };
+  const tC: Team = { id: 'C', name: 'Team C', logo_url: null, group_id: 1, created_at: '' };
   
   const baseMatch: Omit<Match, 'id' | 'team1_runs' | 'team1_wickets' | 'team1_overs' | 'team2_runs' | 'team2_wickets' | 'team2_overs' | 'result'> = {
     match_date: '2024-01-01',
